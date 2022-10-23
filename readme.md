@@ -64,31 +64,31 @@ data will get shown on the UI...
 sample LogFile:
 ```plaintext
 ...
-BluetoothLeScanner      de....ypto.bleclientblessedoriginal  D  Start Scan with callback
-BluetoothLeScanner      de....ypto.bleclientblessedoriginal  D  onScannerRegistered() - status=0 scannerId=9 mScannerId=0
-BluetoothCentralManager de....ypto.bleclientblessedoriginal  I  scan started
-BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Found peripheral 'SM-A515F'
-BluetoothLeScanner      de....ypto.bleclientblessedoriginal  D  Stop Scan with callback
-BluetoothPeripheral     de....ypto.bleclientblessedoriginal  I  connect to 'SM-A515F' (68:D0:C8:D5:4A:AA) using transport LE
-BluetoothGatt           de....ypto.bleclientblessedoriginal  D  connect() - device: 68:D0:C8:D5:4A:AA, auto: false
-BluetoothGatt           de....ypto.bleclientblessedoriginal  D  registerApp() - UUID=d2d69178-2364-4f70-a731-2cc400eb3d07
-BluetoothPeripheral     de....ypto.bleclientblessedoriginal  I  peripheral '68:D0:C8:D5:4A:AA' is connecting
-BluetoothPeripheral     de....ypto.bleclientblessedoriginal  D  discovering services of 'SM-A515F' with delay of 0 ms
-BluetoothPeripheral     de....ypto.bleclientblessedoriginal  I  discovered 5 services for 'SM-A515F'
-BluetoothPeripheral     de....ypto.bleclientblessedoriginal  D  reading characteristic <00002a29-0000-1000-8000-00805f9b34fb>
-BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Received manufacturer: samsung
-BluetoothPeripheral     de....ypto.bleclientblessedoriginal  D  reading characteristic <00002a24-0000-1000-8000-00805f9b34fb>
-BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Received modelnumber: SM-A515F
-BluetoothGatt           de....ypto.bleclientblessedoriginal  D  setCharacteristicNotification() - uuid: 00002a2b-0000-1000-8000-00805f9b34fb enable: true
-BluetoothHandler        de....ypto.bleclientblessedoriginal  I  SUCCESS: Notify set to 'true' for 00002a2b-0000-1000-8000-00805f9b34fb
-BluetoothPeripheral     de....ypto.bleclientblessedoriginal  D  writing <e6070a170d2623073a01> to characteristic <00002a2b-0000-1000-8000-00805f9b34fb>
-BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Received device time: Sun Oct 23 13:38:37 GMT+02:00 2022
-BluetoothHandler        de....ypto.bleclientblessedoriginal  I  SUCCESS: Writing <e6070a170d2623073a01> to <00002a2b-0000-1000-8000-00805f9b34fb>
-BluetoothGatt           de....ypto.bleclientblessedoriginal  D  setCharacteristicNotification() - uuid: 00002a37-0000-1000-8000-00805f9b34fb enable: true
-BluetoothHandler        de....ypto.bleclientblessedoriginal  I  SUCCESS: Notify set to 'true' for 00002a37-0000-1000-8000-00805f9b34fb
-BluetoothHandler        de....ypto.bleclientblessedoriginal  D  79
-BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Received device time: Sun Oct 23 13:38:35 GMT+02:00 2022
-BluetoothHandler        de....ypto.bleclientblessedoriginal  D  77
+BluetoothLeScanner       D  Start Scan with callback
+BluetoothLeScanner       D  onScannerRegistered() - status=0 scannerId=9 mScannerId=0
+BluetoothCentralManager  I  scan started
+BluetoothHandler         I  Found peripheral 'SM-A515F'
+BluetoothLeScanner       D  Stop Scan with callback
+BluetoothPeripheral      I  connect to 'SM-A515F' (68:D0:C8:D5:4A:AA) using transport LE
+BluetoothGatt            D  connect() - device: 68:D0:C8:D5:4A:AA, auto: false
+BluetoothGatt            D  registerApp() - UUID=d2d69178-2364-4f70-a731-2cc400eb3d07
+BluetoothPeripheral      I  peripheral '68:D0:C8:D5:4A:AA' is connecting
+BluetoothPeripheral      D  discovering services of 'SM-A515F' with delay of 0 ms
+BluetoothPeripheral      I  discovered 5 services for 'SM-A515F'
+BluetoothPeripheral      D  reading characteristic <00002a29-0000-1000-8000-00805f9b34fb>
+BluetoothHandler         I  Received manufacturer: samsung
+BluetoothPeripheral      D  reading characteristic <00002a24-0000-1000-8000-00805f9b34fb>
+BluetoothHandler         I  Received modelnumber: SM-A515F
+BluetoothGatt            D  setCharacteristicNotification() - uuid: 00002a2b-0000-1000-8000-00805f9b34fb enable: true
+BluetoothHandler         I  SUCCESS: Notify set to 'true' for 00002a2b-0000-1000-8000-00805f9b34fb
+BluetoothPeripheral      D  writing <e6070a170d2623073a01> to characteristic <00002a2b-0000-1000-8000-00805f9b34fb>
+BluetoothHandler         I  Received device time: Sun Oct 23 13:38:37 GMT+02:00 2022
+BluetoothHandler         I  SUCCESS: Writing <e6070a170d2623073a01> to <00002a2b-0000-1000-8000-00805f9b34fb>
+BluetoothGatt            D  setCharacteristicNotification() - uuid: 00002a37-0000-1000-8000-00805f9b34fb enable: true
+BluetoothHandler         I  SUCCESS: Notify set to 'true' for 00002a37-0000-1000-8000-00805f9b34fb
+BluetoothHandler         D  79
+BluetoothHandler         I  Received device time: Sun Oct 23 13:38:35 GMT+02:00 2022
+BluetoothHandler         D  77
 ...
 ```
 
