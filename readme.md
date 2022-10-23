@@ -1,9 +1,9 @@
 # Bluetooth Low Energy Server with ANDROID-BLESSED library (original)
 
-This is the original BLE Peripheral (server) example using the code in 
-https://github.com/weliem/bluetooth-server-example.
+This is the original BLE Client example using the code in https://github.com/weliem/blessed-android.
 
-The code is minimal changed to get a basis for further enhancements.
+The code is minimal changed to get a basis for further enhancements. The changes took place in the 
+BluetoothHandler.java file to connect to the sample server app (BleServerBlessedOriginal).
 
 The library in use (ANDROID-BLESSED) is available here: https://github.com/weliem/blessed-android 
 provided by **Martijn van Welie**.
@@ -11,17 +11,16 @@ provided by **Martijn van Welie**.
 For a general overview on Bluetooth Low Energy (BLE) see this perfect article "The Ultimate Guide to Android Bluetooth Low Energy", 
 available as PDF in the docs folder as well: https://punchthrough.com/android-ble-guide/.
 
-
+Screenshot of the running app after connection to the server.
 ![client_view_after_connect](https://github.com/MichaelsPlayground/BleClientBlessedOriginal/blob/master/docs/client01.png?raw=true)
 
-
-To check that the server is up and running I recommend to install another app on a second device that 
+To check that the server is up and running I recommend to additionally install another app on the second device that 
 allows to connect to the "Server", I'm using **nRF Connect for Mobile** and it is available on the 
 Google's PlayStore:  https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp&hl=de&gl=US. I 
 provide a simple manual on how to work with the nRF Connect-app here:
 [nRFConnect_manual](nrfconnect_manual.md)
 
-To get the Server app to build you need 2 additional dependencies, add them in build.gradle(app):
+To get the Client app to build you need 2 additional dependencies, add them in build.gradle(app):
 ```plaintext
     implementation 'com.jakewharton.timber:timber:5.0.1'
     implementation 'com.github.weliem:blessed-android:2.3.4'
@@ -58,6 +57,40 @@ For security reasons the address the server can get connected is changing very o
 like the nRF Connect-app it is often necessary to (re)run a scan AND choose the newest entry (mostly the most  
 bottom down one).**
 
+This example app is providing just a minimal UI but it is worth to see the LogCat output where you can see  
+e.g. that the example Server app is providing the (server's) time every second. In an enhanced version this 
+data will get shown on the UI...
+
+sample LogFile:
+```plaintext
+...
+BluetoothLeScanner      de....ypto.bleclientblessedoriginal  D  Start Scan with callback
+BluetoothLeScanner      de....ypto.bleclientblessedoriginal  D  onScannerRegistered() - status=0 scannerId=9 mScannerId=0
+BluetoothCentralManager de....ypto.bleclientblessedoriginal  I  scan started
+BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Found peripheral 'SM-A515F'
+BluetoothLeScanner      de....ypto.bleclientblessedoriginal  D  Stop Scan with callback
+BluetoothPeripheral     de....ypto.bleclientblessedoriginal  I  connect to 'SM-A515F' (68:D0:C8:D5:4A:AA) using transport LE
+BluetoothGatt           de....ypto.bleclientblessedoriginal  D  connect() - device: 68:D0:C8:D5:4A:AA, auto: false
+BluetoothGatt           de....ypto.bleclientblessedoriginal  D  registerApp() - UUID=d2d69178-2364-4f70-a731-2cc400eb3d07
+BluetoothPeripheral     de....ypto.bleclientblessedoriginal  I  peripheral '68:D0:C8:D5:4A:AA' is connecting
+BluetoothPeripheral     de....ypto.bleclientblessedoriginal  D  discovering services of 'SM-A515F' with delay of 0 ms
+BluetoothPeripheral     de....ypto.bleclientblessedoriginal  I  discovered 5 services for 'SM-A515F'
+BluetoothPeripheral     de....ypto.bleclientblessedoriginal  D  reading characteristic <00002a29-0000-1000-8000-00805f9b34fb>
+BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Received manufacturer: samsung
+BluetoothPeripheral     de....ypto.bleclientblessedoriginal  D  reading characteristic <00002a24-0000-1000-8000-00805f9b34fb>
+BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Received modelnumber: SM-A515F
+BluetoothGatt           de....ypto.bleclientblessedoriginal  D  setCharacteristicNotification() - uuid: 00002a2b-0000-1000-8000-00805f9b34fb enable: true
+BluetoothHandler        de....ypto.bleclientblessedoriginal  I  SUCCESS: Notify set to 'true' for 00002a2b-0000-1000-8000-00805f9b34fb
+BluetoothPeripheral     de....ypto.bleclientblessedoriginal  D  writing <e6070a170d2623073a01> to characteristic <00002a2b-0000-1000-8000-00805f9b34fb>
+BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Received device time: Sun Oct 23 13:38:37 GMT+02:00 2022
+BluetoothHandler        de....ypto.bleclientblessedoriginal  I  SUCCESS: Writing <e6070a170d2623073a01> to <00002a2b-0000-1000-8000-00805f9b34fb>
+BluetoothGatt           de....ypto.bleclientblessedoriginal  D  setCharacteristicNotification() - uuid: 00002a37-0000-1000-8000-00805f9b34fb enable: true
+BluetoothHandler        de....ypto.bleclientblessedoriginal  I  SUCCESS: Notify set to 'true' for 00002a37-0000-1000-8000-00805f9b34fb
+BluetoothHandler        de....ypto.bleclientblessedoriginal  D  79
+BluetoothHandler        de....ypto.bleclientblessedoriginal  I  Received device time: Sun Oct 23 13:38:35 GMT+02:00 2022
+BluetoothHandler        de....ypto.bleclientblessedoriginal  D  77
+...
+```
 
 Some technical details on this app:
 ```plaintext
@@ -65,5 +98,4 @@ minimum SDK is 21
 compiled/target SDK is 33
 Gradle version is 7.4
 ```
-
 
