@@ -18,7 +18,8 @@ To check that the server is up and running I recommend to additionally install a
 allows to connect to the "Server", I'm using **nRF Connect for Mobile** and it is available on the 
 Google's PlayStore:  https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp&hl=de&gl=US. I 
 provide a simple manual on how to work with the nRF Connect-app here: 
-[nRFConnect_manual](nrfconnect_manual.md)
+[nRFConnect_manual](nrfconnect_manual.md) or see my article on Medium: 
+https://medium.com/@androidcrypto/connect-the-android-nrf-connect-mobile-app-with-a-bluetooth-low-energy-device-8ba900d70286
 
 To get the Client app to build you need 2 additional dependencies, add them in build.gradle(app):
 ```plaintext
