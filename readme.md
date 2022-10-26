@@ -1,4 +1,4 @@
-# Bluetooth Low Energy Server with BLESSED-ANDROID library (original)
+# Bluetooth Low Energy Client with BLESSED-ANDROID library (original)
 
 This is the original BLE Client example using the code in https://github.com/weliem/blessed-android.
 
@@ -41,8 +41,8 @@ dependencyResolutionManagement {
 }
 ```
 
-You may notice that the AndroidManifest.xml does not contain any Bluetooth related permissions - they are all  
-set within the library but you are asked to grant some runtime permissions during startup (depending on the Android 
+You may notice that the AndroidManifest.xml does not contain any Bluetooth related permissions - they are all 
+set within the library but you are asked to grant some runtime permissions during startup (depending on the Android  
 SDK version running on your Smartphone the server is running on).
 
 Notice regarding a bug in the blessed-library's log system: in BluetoothServer.java you will notice an 
@@ -53,12 +53,12 @@ Timber.plant(new Timber.DebugTree());
 This error is filed as a Timber issue and may get corrected in a newer version. The good news is - you 
 can build your app regardless of this error and you still see the logged messages in your LogCat.
 
-**Important notice when working with an emulated device running on a Smartphone (e.g. the BleServerBlessedOriginal): 
+**Important notice when working with an emulated device running on a Smartphone (e.g. the BleServerBlessedOriginal):  
 For security reasons the address the server can get connected is changing very often so when using a client app 
-like the nRF Connect-app it is often necessary to (re)run a scan AND choose the newest entry (mostly the most  
+like the nRF Connect-app it is often necessary to (re)run a scan AND choose the newest entry (mostly the most 
 bottom down one).**
 
-This example app is providing just a minimal UI but it is worth to see the LogCat output where you can see  
+This example app is providing just a minimal UI but it is worth to see the LogCat output where you can see 
 e.g. that the example Server app is providing the (server's) time every second. In an enhanced version this 
 data will get shown on the UI...
 
