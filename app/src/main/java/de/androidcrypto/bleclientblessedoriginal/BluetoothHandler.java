@@ -43,20 +43,20 @@ import static java.lang.Math.abs;
 class BluetoothHandler {
 
     // Intent constants
-    public static final String MEASUREMENT_BLOODPRESSURE = "blessed.measurement.bloodpressure";
-    public static final String MEASUREMENT_BLOODPRESSURE_EXTRA = "blessed.measurement.bloodpressure.extra";
-    public static final String MEASUREMENT_TEMPERATURE = "blessed.measurement.temperature";
-    public static final String MEASUREMENT_TEMPERATURE_EXTRA = "blessed.measurement.temperature.extra";
-    public static final String MEASUREMENT_HEARTRATE = "blessed.measurement.heartrate";
-    public static final String MEASUREMENT_HEARTRATE_EXTRA = "blessed.measurement.heartrate.extra";
-    public static final String MEASUREMENT_GLUCOSE = "blessed.measurement.glucose";
-    public static final String MEASUREMENT_GLUCOSE_EXTRA = "blessed.measurement.glucose.extra";
-    public static final String MEASUREMENT_PULSE_OX = "blessed.measurement.pulseox";
-    public static final String MEASUREMENT_PULSE_OX_EXTRA_CONTINUOUS = "blessed.measurement.pulseox.extra.continuous";
-    public static final String MEASUREMENT_PULSE_OX_EXTRA_SPOT = "blessed.measurement.pulseox.extra.spot";
-    public static final String MEASUREMENT_WEIGHT = "blessed.measurement.weight";
-    public static final String MEASUREMENT_WEIGHT_EXTRA = "blessed.measurement.weight.extra";
-    public static final String MEASUREMENT_EXTRA_PERIPHERAL = "blessed.measurement.peripheral";
+    public static final String MEASUREMENT_BLOODPRESSURE = "androidcrypto.measurement.bloodpressure";
+    public static final String MEASUREMENT_BLOODPRESSURE_EXTRA = "androidcrypto.measurement.bloodpressure.extra";
+    public static final String MEASUREMENT_TEMPERATURE = "androidcrypto.measurement.temperature";
+    public static final String MEASUREMENT_TEMPERATURE_EXTRA = "androidcrypto.measurement.temperature.extra";
+    public static final String MEASUREMENT_HEARTRATE = "androidcrypto.measurement.heartrate";
+    public static final String MEASUREMENT_HEARTRATE_EXTRA = "androidcrypto.measurement.heartrate.extra";
+    public static final String MEASUREMENT_GLUCOSE = "androidcrypto.measurement.glucose";
+    public static final String MEASUREMENT_GLUCOSE_EXTRA = "androidcrypto.measurement.glucose.extra";
+    public static final String MEASUREMENT_PULSE_OX = "androidcrypto.measurement.pulseox";
+    public static final String MEASUREMENT_PULSE_OX_EXTRA_CONTINUOUS = "androidcrypto.measurement.pulseox.extra.continuous";
+    public static final String MEASUREMENT_PULSE_OX_EXTRA_SPOT = "androidcrypto.measurement.pulseox.extra.spot";
+    public static final String MEASUREMENT_WEIGHT = "androidcrypto.measurement.weight";
+    public static final String MEASUREMENT_WEIGHT_EXTRA = "androidcrypto.measurement.weight.extra";
+    public static final String MEASUREMENT_EXTRA_PERIPHERAL = "androidcrypto.measurement.peripheral";
 
     // UUIDs for the Blood Pressure service (BLP)
     private static final UUID BLOOD_PRESSURE_SERVICE_UUID = UUID.fromString("00001810-0000-1000-8000-00805f9b34fb");

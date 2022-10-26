@@ -12,7 +12,7 @@ For a general overview on Bluetooth Low Energy (BLE) see this perfect article "T
 available as PDF in the docs folder as well: https://punchthrough.com/android-ble-guide/.
 
 Screenshot of the running app after connection to the server.
-![client_view_after_connect](https://github.com/MichaelsPlayground/BleClientBlessedOriginal/blob/master/docs/client01.png?raw=true)
+![client_view_after_connect](docs/client01.png?raw=true)
 
 To check that the server is up and running I recommend to additionally install another app on the second device that 
 allows to connect to the "Server", I'm using **nRF Connect for Mobile** and it is available on the 
