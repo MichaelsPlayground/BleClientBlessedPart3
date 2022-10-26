@@ -100,3 +100,4 @@ compiled/target SDK is 33
 Gradle version is 7.4
 ```
 
+The library blessed-android is MIT-licensed.
