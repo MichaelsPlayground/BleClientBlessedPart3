@@ -1,4 +1,4 @@
-package de.androidcrypto.bleclientblessedoriginal;
+package de.androidcrypto.bleclientblessedpart2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -16,6 +16,9 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.welie.blessed.BluetoothCentralManager;
@@ -34,6 +37,12 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
+    // new in part 2
+    Button connectToHrsDevices, disconnectFromHrsDevice;
+    com.google.android.material.textfield.TextInputEditText connectedDevice;
+    BluetoothHandler bluetoothHandler;
+    String peripheralMacAddress; // filled by BroadcastReceiver getPeripheralMacAddressStateReceiver
+
     private TextView measurementValue;
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int ACCESS_LOCATION_REQUEST = 2;
@@ -43,7 +52,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // new in part 2
+        connectToHrsDevices = findViewById(R.id.btnMainConnectToHeartRateServiceDevices);
+        disconnectFromHrsDevice = findViewById(R.id.btnMainDisconnectFromHeartRateServiceDevice);
+        connectedDevice = findViewById(R.id.etMainConnectedDevice);
+
         measurementValue = (TextView) findViewById(R.id.bloodPressureValue);
+
+        // new in part 2
+        registerReceiver(getPeripheralMacAddressStateReceiver, new IntentFilter(BluetoothHandler.BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS));
 
         registerReceiver(locationServiceStateReceiver, new IntentFilter((LocationManager.MODE_CHANGED_ACTION)));
         registerReceiver(bloodPressureDataReceiver, new IntentFilter( BluetoothHandler.MEASUREMENT_BLOODPRESSURE ));
@@ -52,6 +70,29 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(pulseOxDataReceiver, new IntentFilter( BluetoothHandler.MEASUREMENT_PULSE_OX ));
         registerReceiver(weightDataReceiver, new IntentFilter(BluetoothHandler.MEASUREMENT_WEIGHT));
         registerReceiver(glucoseDataReceiver, new IntentFilter(BluetoothHandler.MEASUREMENT_GLUCOSE));
+
+        // new in part 2
+        connectToHrsDevices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bluetoothHandler != null) {
+                    Log.i("Main", "connectToHrsDevices");
+                    bluetoothHandler.connectToHeartRateServiceDevice();
+                }
+            }
+        });
+
+        disconnectFromHrsDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bluetoothHandler != null) {
+                    Log.i("Main", "disconnectFromHrsDevice");
+                    System.out.println("periphalMac: " + peripheralMacAddress);
+                    // todo get peripheralMacAddress and use it here
+                    //bluetoothHandler.disconnectFromHeartRateServiceDevice("xxx");
+                }
+            }
+        });
     }
 
     @SuppressLint("MissingPermission")
@@ -80,7 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initBluetoothHandler()
     {
-        BluetoothHandler.getInstance(getApplicationContext());
+        // BluetoothHandler.getInstance(getApplicationContext());
+        // new in part 2
+        bluetoothHandler = BluetoothHandler.getInstance(getApplicationContext());
     }
 
     @NotNull
@@ -91,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // new in part 2
+        unregisterReceiver(getPeripheralMacAddressStateReceiver);
+
         unregisterReceiver(locationServiceStateReceiver);
         unregisterReceiver(bloodPressureDataReceiver);
         unregisterReceiver(temperatureDataReceiver);
@@ -99,6 +145,25 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(weightDataReceiver);
         unregisterReceiver(glucoseDataReceiver);
     }
+
+    /**
+     * section for BroadcastReceiver
+     */
+
+    private final BroadcastReceiver getPeripheralMacAddressStateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String dataString = intent.getStringExtra(BluetoothHandler.BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA);
+            if (dataString == null) return;
+            connectedDevice.setText(dataString);
+            // save the peripheralsMacAddress
+            if (dataString.length() > 5) {
+                peripheralMacAddress = dataString.substring(0, 17);
+            } else {
+                peripheralMacAddress = "";
+            }
+        }
+    };
 
     private final BroadcastReceiver locationServiceStateReceiver = new BroadcastReceiver() {
         @Override

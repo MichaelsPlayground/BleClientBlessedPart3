@@ -1,4 +1,4 @@
-package de.androidcrypto.bleclientblessedoriginal;
+package de.androidcrypto.bleclientblessedpart2;
 
 import android.content.Context;
 

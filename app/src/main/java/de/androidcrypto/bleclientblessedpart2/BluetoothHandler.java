@@ -1,4 +1,4 @@
-package de.androidcrypto.bleclientblessedoriginal;
+package de.androidcrypto.bleclientblessedpart2;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -17,8 +17,6 @@ import com.welie.blessed.ConnectionPriority;
 import com.welie.blessed.GattStatus;
 import com.welie.blessed.HciStatus;
 
-import com.welie.blessed.PhyOptions;
-import com.welie.blessed.PhyType;
 import com.welie.blessed.ScanFailure;
 import com.welie.blessed.WriteType;
 
@@ -43,6 +41,10 @@ import static java.lang.Math.abs;
 class BluetoothHandler {
 
     // Intent constants
+    // new in part 2
+    public static final String BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS = "androidcrypto.bluetoothhandler.peripheralmacaddress";
+    public static final String BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA = "androidcrypto.bluetoothhandler.peripheralmacaddress.extra";
+
     public static final String MEASUREMENT_BLOODPRESSURE = "androidcrypto.measurement.bloodpressure";
     public static final String MEASUREMENT_BLOODPRESSURE_EXTRA = "androidcrypto.measurement.bloodpressure.extra";
     public static final String MEASUREMENT_TEMPERATURE = "androidcrypto.measurement.temperature";
@@ -108,6 +110,18 @@ class BluetoothHandler {
     private final Context context;
     private final Handler handler = new Handler();
     private int currentTimeCounter = 0;
+
+
+    // new in part 2
+    public void connectToHeartRateServiceDevice() {
+        startScanHrs();
+    }
+
+    // new in part 2
+    public void disconnectFromHeartRateServiceDevice(String peripheralMacAddress) {
+        BluetoothPeripheral connectedPeripheral = central.getPeripheral(peripheralMacAddress);
+        central.cancelConnection(connectedPeripheral);
+    }
 
     // Callback for peripherals
     private final BluetoothPeripheralCallback peripheralCallback = new BluetoothPeripheralCallback() {
@@ -307,16 +321,29 @@ class BluetoothHandler {
         @Override
         public void onConnectedPeripheral(@NotNull BluetoothPeripheral peripheral) {
             Timber.i("connected to '%s'", peripheral.getName());
+            Intent intent = new Intent(BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS);
+            String returnString = peripheral.getAddress() + " (" +
+            peripheral.getName() + ")";
+            intent.putExtra(BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA, returnString);
+            context.sendBroadcast(intent);
         }
 
         @Override
         public void onConnectionFailed(@NotNull BluetoothPeripheral peripheral, final @NotNull HciStatus status) {
             Timber.e("connection '%s' failed with status %s", peripheral.getName(), status);
+            Intent intent = new Intent(BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS);
+            String returnString = "";
+            intent.putExtra(BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA, returnString);
+            context.sendBroadcast(intent);
         }
 
         @Override
         public void onDisconnectedPeripheral(@NotNull final BluetoothPeripheral peripheral, final @NotNull HciStatus status) {
             Timber.i("disconnected '%s' with status %s", peripheral.getName(), status);
+            Intent intent = new Intent(BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS);
+            String returnString = "";
+            intent.putExtra(BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA, returnString);
+            context.sendBroadcast(intent);
 
             // Reconnect to this device when it becomes available again
             handler.postDelayed(new Runnable() {
@@ -347,7 +374,9 @@ class BluetoothHandler {
                 // Bluetooth is on now, start scanning again
                 // Scan for peripherals with a certain service UUIDs
                 central.startPairingPopupHack();
-                startScan();
+                // changed in part 2
+                // startScan();
+                startScanHrs();
             }
         }
 
@@ -375,7 +404,11 @@ class BluetoothHandler {
 
         // Scan for peripherals with a certain service UUIDs
         central.startPairingPopupHack();
-        startScan();
+
+        // changed in part 2
+        // the scanning is disabled here, it will be done by calling connectToHeartRateServiceDevice
+        // startScan();
+
     }
 
     private void startScan() {
@@ -385,6 +418,18 @@ class BluetoothHandler {
                 // ### add HRS = HeartRate service to scan UUIDs
                 central.scanForPeripheralsWithServices(new UUID[]{HEART_RATE_SERVICE_UUID, BLOOD_PRESSURE_SERVICE_UUID, HEALTH_THERMOMETER_SERVICE_UUID, PULSE_OXIMETER_SERVICE_UUID, WEIGHT_SCALE_SERVICE_UUID, GLUCOSE_SERVICE_UUID});
                 //central.scanForPeripheralsWithServices(new UUID[]{BLP_SERVICE_UUID, HTS_SERVICE_UUID, PLX_SERVICE_UUID, WSS_SERVICE_UUID, GLUCOSE_SERVICE_UUID});
+            }
+        },1000);
+
+    }
+
+    // new in part 2
+    // this will connect to HeartRateService devices only
+    private void startScanHrs() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                central.scanForPeripheralsWithServices(new UUID[]{HEART_RATE_SERVICE_UUID});
             }
         },1000);
     }
