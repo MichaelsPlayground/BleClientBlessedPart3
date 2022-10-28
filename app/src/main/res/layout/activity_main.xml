@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:focusable="false"
-            android:text=""
+            android:text="disconnected"
             android:textSize="14sp"
             android:visibility="visible"
             tools:ignore="KeyboardInaccessibleWidget" />

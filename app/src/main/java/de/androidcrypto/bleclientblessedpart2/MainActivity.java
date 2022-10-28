@@ -184,14 +184,16 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String dataString = intent.getStringExtra(BluetoothHandler.BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA);
             if (dataString == null) return;
-            connectedDevice.setText(dataString);
+
             // save the peripheralsMacAddress
-            if (dataString.length() > 5) {
+            if (dataString.length() > 16) {
                 peripheralMacAddress = dataString.substring(0, 17);
                 connectToHrsDevices.setEnabled(false);
                 disconnectFromHrsDevice.setEnabled(true);
+                connectedDevice.setText(dataString);
             } else {
                 peripheralMacAddress = "disconnected";
+                connectedDevice.setText(peripheralMacAddress);
                 connectToHrsDevices.setEnabled(true);
                 disconnectFromHrsDevice.setEnabled(false);
             }
