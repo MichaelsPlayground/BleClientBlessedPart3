@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 if (bluetoothHandler != null) {
                     Log.i("Main", "connectToHrsDevices");
                     bluetoothHandler.connectToHeartRateServiceDevice();
+
+                    // todo enable/disable buttons for connection / disconnection
                 }
             }
         });
@@ -86,10 +88,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (bluetoothHandler != null) {
-                    Log.i("Main", "disconnectFromHrsDevice");
-                    System.out.println("periphalMac: " + peripheralMacAddress);
-                    // todo get peripheralMacAddress and use it here
-                    //bluetoothHandler.disconnectFromHeartRateServiceDevice("xxx");
+                    if (!peripheralMacAddress.equals("")) {
+                        Log.i("Main", "disconnectFromHrsDevice");
+                        System.out.println("periphalMac: " + peripheralMacAddress);
+                        // todo get peripheralMacAddress and use it here
+                        bluetoothHandler.disconnectFromHeartRateServiceDevice(peripheralMacAddress);
+                    }
                 }
             }
         });
