@@ -191,11 +191,15 @@ public class MainActivity extends AppCompatActivity {
                 connectToHrsDevices.setEnabled(false);
                 disconnectFromHrsDevice.setEnabled(true);
                 connectedDevice.setText(dataString);
+                enableSubscriptions.setEnabled(true);
+                disableSubscriptions.setEnabled(true);
             } else {
                 peripheralMacAddress = "disconnected";
                 connectedDevice.setText(peripheralMacAddress);
                 connectToHrsDevices.setEnabled(true);
                 disconnectFromHrsDevice.setEnabled(false);
+                enableSubscriptions.setEnabled(false);
+                disableSubscriptions.setEnabled(false);
             }
         }
     };
