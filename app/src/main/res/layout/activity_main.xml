@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:enabled="true"
+        android:enabled="false"
         android:text="disconnect from device with a Heart Rate Service" />
 
     <com.google.android.material.textfield.TextInputLayout
