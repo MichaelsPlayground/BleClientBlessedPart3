@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     // new in part 2
     Button connectToHrsDevices, disconnectFromHrsDevice;
     com.google.android.material.textfield.TextInputEditText connectedDevice;
+    Button enableSubscriptions, disableSubscriptions;
+
     BluetoothHandler bluetoothHandler;
     String peripheralMacAddress; // filled by BroadcastReceiver getPeripheralMacAddressStateReceiver
 
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         connectToHrsDevices = findViewById(R.id.btnMainConnectToHeartRateServiceDevices);
         disconnectFromHrsDevice = findViewById(R.id.btnMainDisconnectFromHeartRateServiceDevice);
         connectedDevice = findViewById(R.id.etMainConnectedDevice);
+        enableSubscriptions = findViewById(R.id.btnMainEnableAllSubscriptions);
+        disableSubscriptions = findViewById(R.id.btnMainDisableAllSubscriptions);
 
         measurementValue = (TextView) findViewById(R.id.bloodPressureValue);
 
@@ -90,6 +94,30 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("Main", "disconnectFromHrsDevice");
                         System.out.println("periphalMac: " + peripheralMacAddress);
                         bluetoothHandler.disconnectFromHeartRateServiceDevice(peripheralMacAddress);
+                    }
+                }
+            }
+        });
+
+        enableSubscriptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bluetoothHandler != null) {
+                    if (peripheralMacAddress.length() > 16) {
+                        Log.i("Main", "enable all subscriptions");
+                        bluetoothHandler.enableAllSubscriptions(peripheralMacAddress, true);
+                    }
+                }
+            }
+        });
+
+        disableSubscriptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bluetoothHandler != null) {
+                    if (peripheralMacAddress.length() > 16) {
+                        Log.i("Main", "enable all subscriptions");
+                        bluetoothHandler.enableAllSubscriptions(peripheralMacAddress, false);
                     }
                 }
             }

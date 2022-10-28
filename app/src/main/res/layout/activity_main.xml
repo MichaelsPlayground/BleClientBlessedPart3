@@ -65,6 +65,24 @@
             tools:ignore="KeyboardInaccessibleWidget" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Button
+        android:id="@+id/btnMainEnableAllSubscriptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:text="enable all subscriptions" />
+
+    <Button
+        android:id="@+id/btnMainDisableAllSubscriptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:text="disable all subscriptions" />
+
     <TextView
         android:id="@+id/bloodPressureValue"
         android:layout_width="wrap_content"

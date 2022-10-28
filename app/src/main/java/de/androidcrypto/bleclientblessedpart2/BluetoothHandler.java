@@ -123,6 +123,22 @@ class BluetoothHandler {
         central.cancelConnection(connectedPeripheral);
     }
 
+    // new in part 2
+    public void enableAllSubscriptions(String peripheralMacAddress, boolean enable) {
+        BluetoothPeripheral connectedPeripheral = central.getPeripheral(peripheralMacAddress);
+        connectedPeripheral.setNotify(CURRENT_TIME_SERVICE_UUID, CURRENT_TIME_CHARACTERISTIC_UUID, enable);
+        connectedPeripheral.setNotify(BLOOD_PRESSURE_SERVICE_UUID, BLOOD_PRESSURE_MEASUREMENT_CHARACTERISTIC_UUID, enable);
+        connectedPeripheral.setNotify(HEALTH_THERMOMETER_SERVICE_UUID, TEMPERATURE_MEASUREMENT_CHARACTERISTIC_UUID, enable);
+        connectedPeripheral.setNotify(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID, enable);
+        connectedPeripheral.setNotify(PULSE_OXIMETER_SERVICE_UUID, PULSE_OXIMETER_CONTINUOUS_MEASUREMENT_CHAR_UUID, enable);
+        connectedPeripheral.setNotify(PULSE_OXIMETER_SERVICE_UUID, PULSE_OXIMETER_SPOT_MEASUREMENT_CHAR_UUID, enable);
+        connectedPeripheral.setNotify(WEIGHT_SCALE_SERVICE_UUID, WEIGHT_SCALE_MEASUREMENT_CHAR_UUID, enable);
+        connectedPeripheral.setNotify(GLUCOSE_SERVICE_UUID, GLUCOSE_MEASUREMENT_CHARACTERISTIC_UUID, enable);
+        connectedPeripheral.setNotify(GLUCOSE_SERVICE_UUID, GLUCOSE_MEASUREMENT_CONTEXT_CHARACTERISTIC_UUID, enable);
+        connectedPeripheral.setNotify(GLUCOSE_SERVICE_UUID, GLUCOSE_RECORD_ACCESS_POINT_CHARACTERISTIC_UUID, enable);
+        connectedPeripheral.setNotify(CONTOUR_SERVICE_UUID, CONTOUR_CLOCK, enable);
+    }
+
     // Callback for peripherals
     private final BluetoothPeripheralCallback peripheralCallback = new BluetoothPeripheralCallback() {
         @Override
@@ -141,7 +157,9 @@ class BluetoothHandler {
             // Turn on notifications for Current Time Service and write it if possible
             BluetoothGattCharacteristic currentTimeCharacteristic = peripheral.getCharacteristic(CURRENT_TIME_SERVICE_UUID, CURRENT_TIME_CHARACTERISTIC_UUID);
             if (currentTimeCharacteristic != null) {
-                peripheral.setNotify(currentTimeCharacteristic, true);
+
+                // changed in part 2, is done in enableAllSubscriptions
+                //peripheral.setNotify(currentTimeCharacteristic, true);
 
                 // If it has the write property we write the current time
                 if ((currentTimeCharacteristic.getProperties() & PROPERTY_WRITE) > 0) {
@@ -156,6 +174,7 @@ class BluetoothHandler {
 
             // Try to turn on notifications for other characteristics
             peripheral.readCharacteristic(BATTERY_LEVEL_SERVICE_UUID, BATTERY_LEVEL_CHARACTERISTIC_UUID);
+            /* enabling is handled in enableAllSubscriptions
             peripheral.setNotify(BLOOD_PRESSURE_SERVICE_UUID, BLOOD_PRESSURE_MEASUREMENT_CHARACTERISTIC_UUID, true);
             peripheral.setNotify(HEALTH_THERMOMETER_SERVICE_UUID, TEMPERATURE_MEASUREMENT_CHARACTERISTIC_UUID, true);
             peripheral.setNotify(HEART_RATE_SERVICE_UUID, HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID, true);
@@ -166,6 +185,7 @@ class BluetoothHandler {
             peripheral.setNotify(GLUCOSE_SERVICE_UUID, GLUCOSE_MEASUREMENT_CONTEXT_CHARACTERISTIC_UUID, true);
             peripheral.setNotify(GLUCOSE_SERVICE_UUID, GLUCOSE_RECORD_ACCESS_POINT_CHARACTERISTIC_UUID, true);
             peripheral.setNotify(CONTOUR_SERVICE_UUID, CONTOUR_CLOCK, true);
+             */
         }
 
         @Override
