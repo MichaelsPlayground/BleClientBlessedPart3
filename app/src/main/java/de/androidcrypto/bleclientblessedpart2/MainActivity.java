@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     // new in part 2
     Button connectToHrsDevices, disconnectFromHrsDevice;
-    com.google.android.material.textfield.TextInputEditText connectedDevice;
+    com.google.android.material.textfield.TextInputEditText connectedDevice, heartRate, currentTime;
     Button enableSubscriptions, disableSubscriptions;
 
     BluetoothHandler bluetoothHandler;
@@ -61,11 +62,14 @@ public class MainActivity extends AppCompatActivity {
         connectedDevice = findViewById(R.id.etMainConnectedDevice);
         enableSubscriptions = findViewById(R.id.btnMainEnableAllSubscriptions);
         disableSubscriptions = findViewById(R.id.btnMainDisableAllSubscriptions);
+        heartRate = findViewById(R.id.etMainHeartRate);
+        currentTime = findViewById(R.id.etMainCurrentTime);
 
-        measurementValue = (TextView) findViewById(R.id.bloodPressureValue);
+        measurementValue = findViewById(R.id.bloodPressureValue);
 
         // new in part 2
         registerReceiver(getPeripheralMacAddressStateReceiver, new IntentFilter(BluetoothHandler.BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS));
+        registerReceiver(currentTimeDataReceiver, new IntentFilter(BluetoothHandler.BLUETOOTHHANDLER_CURRENT_TIME));
 
         registerReceiver(locationServiceStateReceiver, new IntentFilter((LocationManager.MODE_CHANGED_ACTION)));
         registerReceiver(bloodPressureDataReceiver, new IntentFilter( BluetoothHandler.MEASUREMENT_BLOODPRESSURE ));
@@ -74,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(pulseOxDataReceiver, new IntentFilter( BluetoothHandler.MEASUREMENT_PULSE_OX ));
         registerReceiver(weightDataReceiver, new IntentFilter(BluetoothHandler.MEASUREMENT_WEIGHT));
         registerReceiver(glucoseDataReceiver, new IntentFilter(BluetoothHandler.MEASUREMENT_GLUCOSE));
+
+        // this is for debug purposes - it leaves the screen on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // new in part 2
         connectToHrsDevices.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     if (peripheralMacAddress.length() > 16) {
                         Log.i("Main", "disconnectFromHrsDevice");
                         System.out.println("periphalMac: " + peripheralMacAddress);
+                        bluetoothHandler.enableAllSubscriptions(peripheralMacAddress, false);
                         bluetoothHandler.disconnectFromHeartRateServiceDevice(peripheralMacAddress);
                     }
                 }
@@ -106,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
                     if (peripheralMacAddress.length() > 16) {
                         Log.i("Main", "enable all subscriptions");
                         bluetoothHandler.enableAllSubscriptions(peripheralMacAddress, true);
+                        disconnectFromHrsDevice.setEnabled(false);
+                        disableSubscriptions.setEnabled(true);
+                        enableSubscriptions.setEnabled(false);
                     }
                 }
             }
@@ -116,8 +127,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (bluetoothHandler != null) {
                     if (peripheralMacAddress.length() > 16) {
-                        Log.i("Main", "enable all subscriptions");
+                        Log.i("Main", "disable all subscriptions");
                         bluetoothHandler.enableAllSubscriptions(peripheralMacAddress, false);
+                        disconnectFromHrsDevice.setEnabled(true);
+                        enableSubscriptions.setEnabled(true);
+                        disableSubscriptions.setEnabled(false);
                     }
                 }
             }
@@ -165,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         // new in part 2
         unregisterReceiver(getPeripheralMacAddressStateReceiver);
+        unregisterReceiver(currentTimeDataReceiver);
 
         unregisterReceiver(locationServiceStateReceiver);
         unregisterReceiver(bloodPressureDataReceiver);
@@ -192,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                 disconnectFromHrsDevice.setEnabled(true);
                 connectedDevice.setText(dataString);
                 enableSubscriptions.setEnabled(true);
-                disableSubscriptions.setEnabled(true);
+                disableSubscriptions.setEnabled(false);
             } else {
                 peripheralMacAddress = "disconnected";
                 connectedDevice.setText(peripheralMacAddress);
@@ -243,8 +258,9 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             HeartRateMeasurement measurement = (HeartRateMeasurement) intent.getSerializableExtra(BluetoothHandler.MEASUREMENT_HEARTRATE_EXTRA);
             if (measurement == null) return;
-
-            measurementValue.setText(String.format(Locale.ENGLISH, "%d bpm", measurement.pulse));
+            // changed in part 2
+            heartRate.setText(String.format(Locale.ENGLISH, "%d bpm", measurement.pulse));
+            //measurementValue.setText(String.format(Locale.ENGLISH, "%d bpm", measurement.pulse));
         }
     };
 
@@ -289,6 +305,20 @@ public class MainActivity extends AppCompatActivity {
         BluetoothCentralManager central = BluetoothHandler.getInstance(getApplicationContext()).central;
         return central.getPeripheral(peripheralAddress);
     }
+
+    // new in part 2
+    private final BroadcastReceiver currentTimeDataReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String dateString = intent.getStringExtra(BluetoothHandler.BLUETOOTHHANDLER_CURRENT_TIME_EXTRA);
+            if (dateString == null) return;
+            currentTime.setText(dateString);
+        }
+    };
+
+    /**
+     * section for permissions
+     */
 
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

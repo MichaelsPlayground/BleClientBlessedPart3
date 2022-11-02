@@ -44,6 +44,8 @@ class BluetoothHandler {
     // new in part 2
     public static final String BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS = "androidcrypto.bluetoothhandler.peripheralmacaddress";
     public static final String BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA = "androidcrypto.bluetoothhandler.peripheralmacaddress.extra";
+    public static final String BLUETOOTHHANDLER_CURRENT_TIME = "androidcrypto.bluetoothhandler.currenttime";
+    public static final String BLUETOOTHHANDLER_CURRENT_TIME_EXTRA = "androidcrypto.bluetoothhandler.currenttime.extra";
 
     public static final String MEASUREMENT_BLOODPRESSURE = "androidcrypto.measurement.bloodpressure";
     public static final String MEASUREMENT_BLOODPRESSURE_EXTRA = "androidcrypto.measurement.bloodpressure.extra";
@@ -112,18 +114,31 @@ class BluetoothHandler {
     private int currentTimeCounter = 0;
 
     // new in part 2
+    public void connectToHeartRateServiceDevice() {startScanHrs();}
+/*
     public void connectToHeartRateServiceDevice() {
-        startScanHrs();
+        try {
+            central.close();
+        } catch (IllegalArgumentException e) {
+            // do nothing
+        }
+        startScan();
     }
-
+*/
     // new in part 2
     public void disconnectFromHeartRateServiceDevice(String peripheralMacAddress) {
         BluetoothPeripheral connectedPeripheral = central.getPeripheral(peripheralMacAddress);
         central.cancelConnection(connectedPeripheral);
+        try {
+            central.close();
+        } catch (IllegalArgumentException e) {
+            // do nothing
+        }
     }
 
     // new in part 2
     public void enableAllSubscriptions(String peripheralMacAddress, boolean enable) {
+        System.out.println("*** enableAllSubscriptions: " + enable);
         BluetoothPeripheral connectedPeripheral = central.getPeripheral(peripheralMacAddress);
         connectedPeripheral.setNotify(CURRENT_TIME_SERVICE_UUID, CURRENT_TIME_CHARACTERISTIC_UUID, enable);
         connectedPeripheral.setNotify(BLOOD_PRESSURE_SERVICE_UUID, BLOOD_PRESSURE_MEASUREMENT_CHARACTERISTIC_UUID, enable);
@@ -191,6 +206,7 @@ class BluetoothHandler {
         public void onNotificationStateUpdate(@NotNull BluetoothPeripheral peripheral, @NotNull BluetoothGattCharacteristic characteristic, @NotNull GattStatus status) {
             if (status == GattStatus.SUCCESS) {
                 final boolean isNotifying = peripheral.isNotifying(characteristic);
+                System.out.println("*** isNotifying: " + isNotifying + " on Characteristic: " + characteristic.getUuid().toString());
                 Timber.i("SUCCESS: Notify set to '%s' for %s", isNotifying, characteristic.getUuid());
                 if (characteristic.getUuid().equals(CONTOUR_CLOCK)) {
                     writeContourClock(peripheral);
@@ -264,10 +280,11 @@ class BluetoothHandler {
                 Timber.d("%s", measurement);
             } else if (characteristicUUID.equals(CURRENT_TIME_CHARACTERISTIC_UUID)) {
                 Date currentTime = parser.getDateTime();
-                // ### added some line to show the received Current Time from server
-
-
                 Timber.i("Received device time: %s", currentTime);
+                Intent intent = new Intent(BLUETOOTHHANDLER_CURRENT_TIME);
+                intent.putExtra(BLUETOOTHHANDLER_CURRENT_TIME_EXTRA, currentTime.toString());
+                sendMeasurement(intent, peripheral);
+                Timber.d("%s", currentTime);
 
                 // Deal with Omron devices where we can only write currentTime under specific conditions
                 if (isOmronBPM(peripheral.getName())) {
@@ -383,6 +400,7 @@ class BluetoothHandler {
                 central.createBond(peripheral, peripheralCallback);
             } else {
                 central.connectPeripheral(peripheral, peripheralCallback);
+                //central.autoConnectPeripheral(peripheral, peripheralCallback);
             }
         }
 
@@ -394,7 +412,7 @@ class BluetoothHandler {
                 // Scan for peripherals with a certain service UUIDs
                 central.startPairingPopupHack();
                 // changed in part 2
-                // startScan();
+                //startScan();
                 startScanHrs();
             }
         }
@@ -425,11 +443,12 @@ class BluetoothHandler {
         central.startPairingPopupHack();
 
         // changed in part 2
-        // the scanning is disabled here, it will be done by calling connectToHeartRateServiceDevice
+        // the scanning is commented out here, it will be done by calling connectToHeartRateServiceDevice
         // startScan();
 
     }
 
+/*
     private void startScan() {
         handler.postDelayed(new Runnable() {
             @Override
@@ -441,6 +460,7 @@ class BluetoothHandler {
         },1000);
 
     }
+*/
 
     // new in part 2
     // this will connect to HeartRateService devices only
@@ -452,6 +472,7 @@ class BluetoothHandler {
             }
         },1000);
     }
+
 
     private boolean isOmronBPM(final String name) {
         return name.contains("BLESmart_") || name.contains("BLEsmart_");
