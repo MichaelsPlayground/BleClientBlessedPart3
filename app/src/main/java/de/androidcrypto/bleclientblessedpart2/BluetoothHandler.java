@@ -111,7 +111,6 @@ class BluetoothHandler {
     private final Handler handler = new Handler();
     private int currentTimeCounter = 0;
 
-
     // new in part 2
     public void connectToHeartRateServiceDevice() {
         startScanHrs();
