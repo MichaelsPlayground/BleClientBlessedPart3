@@ -14,7 +14,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginRight="24dp"
         android:text="This is the Bluetooth Low Energy client based on the blessed-android library."
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnMainConnectToHeartRateServiceDevices"
@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:focusable="false"
-                    android:text="waiting for other measurements"
+                    android:text="waiting for heart rate measurements"
                     android:textSize="14sp"
                     android:visibility="visible"
                     tools:ignore="KeyboardInaccessibleWidget" />
@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="48dp"
-                android:text="Waiting for measurement..."
+                android:text="waiting for other measurements..."
                 android:textAlignment="center"
                 android:textSize="24sp" />
 
