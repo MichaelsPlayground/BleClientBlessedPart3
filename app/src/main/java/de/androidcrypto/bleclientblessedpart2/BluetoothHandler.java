@@ -115,16 +115,7 @@ class BluetoothHandler {
 
     // new in part 2
     public void connectToHeartRateServiceDevice() {startScanHrs();}
-/*
-    public void connectToHeartRateServiceDevice() {
-        try {
-            central.close();
-        } catch (IllegalArgumentException e) {
-            // do nothing
-        }
-        startScan();
-    }
-*/
+
     // new in part 2
     public void disconnectFromHeartRateServiceDevice(String peripheralMacAddress) {
         BluetoothPeripheral connectedPeripheral = central.getPeripheral(peripheralMacAddress);
@@ -448,7 +439,7 @@ class BluetoothHandler {
 
     }
 
-/*
+    /*
     private void startScan() {
         handler.postDelayed(new Runnable() {
             @Override
@@ -460,7 +451,7 @@ class BluetoothHandler {
         },1000);
 
     }
-*/
+    */
 
     // new in part 2
     // this will connect to HeartRateService devices only

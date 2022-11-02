@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // new in part 2
         disconnectFromHrsDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // new in part 2
         enableSubscriptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // new in part 2
         disableSubscriptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
      * section for BroadcastReceiver
      */
 
+    // new in part 2
     private final BroadcastReceiver getPeripheralMacAddressStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
