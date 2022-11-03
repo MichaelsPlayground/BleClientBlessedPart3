@@ -114,7 +114,9 @@ class BluetoothHandler {
     private int currentTimeCounter = 0;
 
     // new in part 2
-    public void connectToHeartRateServiceDevice() {startScanHrs();}
+    public void connectToHeartRateServiceDevice() {
+        startScanHrs();
+    }
 
     // new in part 2
     public void disconnectFromHeartRateServiceDevice(String peripheralMacAddress) {
@@ -197,7 +199,6 @@ class BluetoothHandler {
         public void onNotificationStateUpdate(@NotNull BluetoothPeripheral peripheral, @NotNull BluetoothGattCharacteristic characteristic, @NotNull GattStatus status) {
             if (status == GattStatus.SUCCESS) {
                 final boolean isNotifying = peripheral.isNotifying(characteristic);
-                System.out.println("*** isNotifying: " + isNotifying + " on Characteristic: " + characteristic.getUuid().toString());
                 Timber.i("SUCCESS: Notify set to '%s' for %s", isNotifying, characteristic.getUuid());
                 if (characteristic.getUuid().equals(CONTOUR_CLOCK)) {
                     writeContourClock(peripheral);

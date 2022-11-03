@@ -223,6 +223,16 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    // new in part 2
+    private final BroadcastReceiver currentTimeDataReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String dateString = intent.getStringExtra(BluetoothHandler.BLUETOOTHHANDLER_CURRENT_TIME_EXTRA);
+            if (dateString == null) return;
+            currentTime.setText(dateString);
+        }
+    };
+
     private final BroadcastReceiver locationServiceStateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -309,16 +319,6 @@ public class MainActivity extends AppCompatActivity {
         BluetoothCentralManager central = BluetoothHandler.getInstance(getApplicationContext()).central;
         return central.getPeripheral(peripheralAddress);
     }
-
-    // new in part 2
-    private final BroadcastReceiver currentTimeDataReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String dateString = intent.getStringExtra(BluetoothHandler.BLUETOOTHHANDLER_CURRENT_TIME_EXTRA);
-            if (dateString == null) return;
-            currentTime.setText(dateString);
-        }
-    };
 
     /**
      * section for permissions
