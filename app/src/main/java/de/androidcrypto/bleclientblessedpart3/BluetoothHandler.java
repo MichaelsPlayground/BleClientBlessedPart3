@@ -1,4 +1,4 @@
-package de.androidcrypto.bleclientblessedpart2;
+package de.androidcrypto.bleclientblessedpart3;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -46,6 +46,9 @@ class BluetoothHandler {
     public static final String BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA = "androidcrypto.bluetoothhandler.peripheralmacaddress.extra";
     public static final String BLUETOOTHHANDLER_CURRENT_TIME = "androidcrypto.bluetoothhandler.currenttime";
     public static final String BLUETOOTHHANDLER_CURRENT_TIME_EXTRA = "androidcrypto.bluetoothhandler.currenttime.extra";
+    // new in part 3
+    public static final String BLUETOOTHHANDLER_BATTERY_LEVEL = "androidcrypto.bluetoothhandler.batterylevel";
+    public static final String BLUETOOTHHANDLER_BATTERY_LEVEL_EXTRA = "androidcrypto.bluetoothhandler.batterylevel.extra";
 
     public static final String MEASUREMENT_BLOODPRESSURE = "androidcrypto.measurement.bloodpressure";
     public static final String MEASUREMENT_BLOODPRESSURE_EXTRA = "androidcrypto.measurement.bloodpressure.extra";
@@ -144,6 +147,8 @@ class BluetoothHandler {
         connectedPeripheral.setNotify(GLUCOSE_SERVICE_UUID, GLUCOSE_MEASUREMENT_CONTEXT_CHARACTERISTIC_UUID, enable);
         connectedPeripheral.setNotify(GLUCOSE_SERVICE_UUID, GLUCOSE_RECORD_ACCESS_POINT_CHARACTERISTIC_UUID, enable);
         connectedPeripheral.setNotify(CONTOUR_SERVICE_UUID, CONTOUR_CLOCK, enable);
+        // new in part 3
+        connectedPeripheral.setNotify(BATTERY_LEVEL_SERVICE_UUID, BATTERY_LEVEL_CHARACTERISTIC_UUID, enable);
     }
 
     // Callback for peripherals
@@ -294,8 +299,13 @@ class BluetoothHandler {
                     }
                 }
             } else if (characteristicUUID.equals(BATTERY_LEVEL_CHARACTERISTIC_UUID)) {
-                int batteryLevel = parser.getIntValue(FORMAT_UINT8);
-                Timber.i("Received battery level %d%%", batteryLevel);
+                String valueString = parser.getIntValue(FORMAT_UINT8).toString();
+                Timber.i("Received battery level %s%%", valueString);
+                // new in part 3
+                Intent intent = new Intent(BLUETOOTHHANDLER_BATTERY_LEVEL);
+                intent.putExtra(BLUETOOTHHANDLER_BATTERY_LEVEL_EXTRA, valueString);
+                sendMeasurement(intent, peripheral);
+
             } else if (characteristicUUID.equals(MANUFACTURER_NAME_CHARACTERISTIC_UUID)) {
                 String manufacturer = parser.getStringValue(0);
                 Timber.i("Received manufacturer: %s", manufacturer);
@@ -373,11 +383,12 @@ class BluetoothHandler {
             intent.putExtra(BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS_EXTRA, returnString);
             context.sendBroadcast(intent);
 
-            // Reconnect to this device when it becomes available again
+            // do not reconnect to this device when it becomes available again
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    central.autoConnectPeripheral(peripheral, peripheralCallback);
+                    //central.autoConnectPeripheral(peripheral, peripheralCallback);
+                    central.connectPeripheral(peripheral, peripheralCallback);
                 }
             }, 5000);
         }

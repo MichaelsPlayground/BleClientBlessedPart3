@@ -1,4 +1,6 @@
-package de.androidcrypto.bleclientblessedpart2;
+package de.androidcrypto.bleclientblessedpart3;
+
+import static com.welie.blessed.BluetoothBytesParser.FORMAT_UINT8;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -22,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.welie.blessed.BluetoothBytesParser;
 import com.welie.blessed.BluetoothCentralManager;
 import com.welie.blessed.BluetoothPeripheral;
 
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
     com.google.android.material.textfield.TextInputEditText connectedDevice, heartRate, currentTime;
     Button enableSubscriptions, disableSubscriptions;
 
+    // new in part 3
+    com.google.android.material.textfield.TextInputEditText batteryLevel;
+
+    // new in part 2
     BluetoothHandler bluetoothHandler;
     String peripheralMacAddress; // filled by BroadcastReceiver getPeripheralMacAddressStateReceiver
 
@@ -65,11 +72,17 @@ public class MainActivity extends AppCompatActivity {
         heartRate = findViewById(R.id.etMainHeartRate);
         currentTime = findViewById(R.id.etMainCurrentTime);
 
+        // new in part 3
+        batteryLevel = findViewById(R.id.etMainBatteryLevel);
+
         measurementValue = findViewById(R.id.bloodPressureValue);
 
         // new in part 2
         registerReceiver(getPeripheralMacAddressStateReceiver, new IntentFilter(BluetoothHandler.BLUETOOTHHANDLER_PERIPHERAL_MAC_ADDRESS));
         registerReceiver(currentTimeDataReceiver, new IntentFilter(BluetoothHandler.BLUETOOTHHANDLER_CURRENT_TIME));
+
+        // new in part 3
+        registerReceiver(batteryLevelDataReceiver, new IntentFilter(BluetoothHandler.BLUETOOTHHANDLER_BATTERY_LEVEL));
 
         registerReceiver(locationServiceStateReceiver, new IntentFilter((LocationManager.MODE_CHANGED_ACTION)));
         registerReceiver(bloodPressureDataReceiver, new IntentFilter( BluetoothHandler.MEASUREMENT_BLOODPRESSURE ));
@@ -184,6 +197,9 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(getPeripheralMacAddressStateReceiver);
         unregisterReceiver(currentTimeDataReceiver);
 
+        // new in part 3
+        unregisterReceiver(batteryLevelDataReceiver);
+
         unregisterReceiver(locationServiceStateReceiver);
         unregisterReceiver(bloodPressureDataReceiver);
         unregisterReceiver(temperatureDataReceiver);
@@ -196,6 +212,18 @@ public class MainActivity extends AppCompatActivity {
     /**
      * section for BroadcastReceiver
      */
+
+    // new in part 3
+    private final BroadcastReceiver batteryLevelDataReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String dataString = intent.getStringExtra(BluetoothHandler.BLUETOOTHHANDLER_BATTERY_LEVEL_EXTRA);
+            if (dataString == null) return;
+            String resultString = "The remaining battery level is " +
+                    dataString + " %";
+            batteryLevel.setText(resultString);
+        }
+    };
 
     // new in part 2
     private final BroadcastReceiver getPeripheralMacAddressStateReceiver = new BroadcastReceiver() {

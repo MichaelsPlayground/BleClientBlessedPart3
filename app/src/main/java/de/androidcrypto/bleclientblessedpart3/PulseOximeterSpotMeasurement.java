@@ -1,4 +1,4 @@
-package de.androidcrypto.bleclientblessedpart2;
+package de.androidcrypto.bleclientblessedpart3;
 
 import com.welie.blessed.BluetoothBytesParser;
 
