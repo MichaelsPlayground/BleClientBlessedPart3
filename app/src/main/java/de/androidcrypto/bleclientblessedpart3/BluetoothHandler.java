@@ -134,7 +134,6 @@ class BluetoothHandler {
 
     // new in part 2
     public void enableAllSubscriptions(String peripheralMacAddress, boolean enable) {
-        System.out.println("*** enableAllSubscriptions: " + enable);
         BluetoothPeripheral connectedPeripheral = central.getPeripheral(peripheralMacAddress);
         connectedPeripheral.setNotify(CURRENT_TIME_SERVICE_UUID, CURRENT_TIME_CHARACTERISTIC_UUID, enable);
         connectedPeripheral.setNotify(BLOOD_PRESSURE_SERVICE_UUID, BLOOD_PRESSURE_MEASUREMENT_CHARACTERISTIC_UUID, enable);
@@ -160,7 +159,7 @@ class BluetoothHandler {
             // Request a new connection priority
             peripheral.requestConnectionPriority(ConnectionPriority.HIGH);
             // ### commented this line out as not all (most older) Samrtphones run Bluetooth 5 with these capabilities
-            // peripheral.setPreferredPhy(PhyType.LE_2M, PhyType.LE_2M, PhyOptions.S2);
+            // peripheral.setPreferredPhy(PhyType.LE_1M, PhyType.LE_2M, PhyOptions.S2);
 
             // Read manufacturer and model number from the Device Information Service
             peripheral.readCharacteristic(DEVICE_INFORMATION_SERVICE_UUID, MANUFACTURER_NAME_CHARACTERISTIC_UUID);
@@ -185,7 +184,7 @@ class BluetoothHandler {
             }
 
             // Try to turn on notifications for other characteristics
-            peripheral.readCharacteristic(BATTERY_LEVEL_SERVICE_UUID, BATTERY_LEVEL_CHARACTERISTIC_UUID);
+            // peripheral.readCharacteristic(BATTERY_LEVEL_SERVICE_UUID, BATTERY_LEVEL_CHARACTERISTIC_UUID);
             /* enabling is handled in enableAllSubscriptions
             peripheral.setNotify(BLOOD_PRESSURE_SERVICE_UUID, BLOOD_PRESSURE_MEASUREMENT_CHARACTERISTIC_UUID, true);
             peripheral.setNotify(HEALTH_THERMOMETER_SERVICE_UUID, TEMPERATURE_MEASUREMENT_CHARACTERISTIC_UUID, true);
