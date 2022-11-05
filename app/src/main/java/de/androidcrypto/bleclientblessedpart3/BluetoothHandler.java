@@ -247,7 +247,7 @@ class BluetoothHandler {
                 Intent intent = new Intent(MEASUREMENT_HEARTRATE);
                 intent.putExtra(MEASUREMENT_HEARTRATE_EXTRA, measurement);
                 sendMeasurement(intent, peripheral);
-                Timber.d("%s", measurement);
+                Timber.d("HeartRate %s", measurement);
             } else if (characteristicUUID.equals(PULSE_OXIMETER_CONTINUOUS_MEASUREMENT_CHAR_UUID)) {
                 PulseOximeterContinuousMeasurement measurement = new PulseOximeterContinuousMeasurement(value);
                 if (measurement.getSpO2() <= 100 && measurement.getPulseRate() <= 220) {

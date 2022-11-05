@@ -1,9 +1,10 @@
-# Bluetooth Low Energy Client with BLESSED-ANDROID library (part 2)
+# Bluetooth Low Energy Client with BLESSED-ANDROID library (part 3)
 
 This is the part 3 BLE Client example using the library in https://github.com/weliem/blessed-android.
 
 The code is changed to get a better user experience. The changes took place in the 
-BluetoothHandler.java file to connect to the sample server app (BleServerBlessedOriginal).
+BluetoothHandler.java file to connect to the sample server app (BleServerBlessedOriginal) and the 
+MainActivity.java.
 
 The library in use (BLESSED-ANDROID) is available here: https://github.com/weliem/blessed-android 
 provided by **Martijn van Welie**.
