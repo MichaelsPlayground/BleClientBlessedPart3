@@ -2,9 +2,19 @@
 
 This is the part 3 BLE Client example using the library in https://github.com/weliem/blessed-android.
 
-The code is changed to get a better user experience. The changes took place in the 
+The code is changed to get some more information from the server. The changes took place in the 
 BluetoothHandler.java file to connect to the sample server app (BleServerBlessedOriginal) and the 
 MainActivity.java.
+
+Recent parts of the client and the server apps:
+
+Client part 1 (Setup a Android Bluetooth Low Energy client part 1): https://github.com/AndroidCrypto/BleClientBlessedOriginal
+
+Client part 2 (Enhance a Android Bluetooth Low Energy client part 2): https://github.com/AndroidCrypto/BleClientBlessedPart2
+
+Server part 1 (Setup your own Android Bluetooth Low Energy Server part 1): https://github.com/AndroidCrypto/BleServerBlessedOriginal
+
+Server part 2 (Enhance your own Android Bluetooth Low Energy Server part 2): https://github.com/AndroidCrypto/BleServerBlessedPart2
 
 The library in use (BLESSED-ANDROID) is available here: https://github.com/weliem/blessed-android 
 provided by **Martijn van Welie**.

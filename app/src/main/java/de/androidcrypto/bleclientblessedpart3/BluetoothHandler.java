@@ -158,7 +158,7 @@ class BluetoothHandler {
             peripheral.requestMtu(185);
             // Request a new connection priority
             peripheral.requestConnectionPriority(ConnectionPriority.HIGH);
-            // ### commented this line out as not all (most older) Samrtphones run Bluetooth 5 with these capabilities
+            // ### commented this line out as not all (most older) Smartphones don't run Bluetooth 5 with these capabilities
             // peripheral.setPreferredPhy(PhyType.LE_1M, PhyType.LE_2M, PhyOptions.S2);
 
             // Read manufacturer and model number from the Device Information Service
